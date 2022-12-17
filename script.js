@@ -37,3 +37,13 @@ window.onload = () => {
     // Display new quote
     renderNewQuote()
 }
+
+// Start test onclick
+const startTest = () => {
+    console.log('TEST STARTED !!!!!!')
+    timer = ''
+    mistakes = 0
+    userInput.disabled = false;
+    document.getElementById('start-test').style.display = 'none'
+    document.getElementById('stop-test').style.display = 'block'
+}
