@@ -27,6 +27,14 @@ const renderNewQuote = async () => {
     quoteSection.innerHTML += arr.join('')  // don't know why they used the += and not the = ¯\_(ツ)_/¯ 
 }
 
+const fakeApiReq = () => {
+    quote = 'A cat and a cow'
+    let arr = quote.split('').map((value) => {
+        return "<span class='quote-chars'>" + value + "</span>"
+    })
+    quoteSection.innerHTML += arr.join('')
+}
+
 // New sentence on window load event
 window.onload = () => {
     userInput.value = ''
@@ -35,12 +43,74 @@ window.onload = () => {
     document.getElementById('stop-test').style.display = 'none'
     userInput.disabled = true
     // Display new quote
-    renderNewQuote()
+    // renderNewQuote()
+    fakeApiReq()
 }
+
+// Logic to compare input to quote
+userInput.addEventListener('input', () => {
+    let quoteChars = document.querySelectorAll('.quote-chars')
+    // Convert NodeList to Array with Array.from()
+    quoteChars = Array.from(quoteChars)
+    // Array of user input characters
+    let userInputChars = userInput.value.split('')
+    console.log(userInputChars)
+    // Loop through each characters in quotes
+    quoteChars.forEach((char, index) => {
+        // Check if char (quote character) = userInputChars[index] (input character)
+        if (char.innerText == userInputChars[index]) {
+            char.classList.add('success')
+        }
+        // If user hasn't entered anything or backspaced
+        else if (userInputChars[index] == null) {   // undefined also works instead of null
+            // If you try to index an empty array you get undefined. I dont understand why they used null
+            // const emptyArr = [], emptyArr[1] returns undefined
+            // const const twoItems = ['a', 'b'], twoItems[2] returns undefined
+            // forEach goes through each character in the quoteChars array
+            // When a user backspaces or when the array is empty, userInputChars[index] is undefined
+            // If the conditions above are met, the if/else statement to remove class below runs
+
+            // null: intentional absence of any value, must be assigned
+            // undefined: variables that do not have an assigned value
+
+            // In conclusion, from my research, I think that in this case. undefined might be a better use.
+            // **************************************
+
+            // Remove class if any 
+            if (char.classList.contains('success')) {
+                char.classList.remove('success')
+            }
+            else {
+                char.classList.remove('fail')
+            }
+        }
+        // If user enters wrong character
+        else {
+            // Check if fail class has already been added
+            if (!char.classList.contains('fail')) {
+                // increment and display mistakes
+                mistakes += 1
+                // Add fail class
+                char.classList.add('fail')
+            }
+            document.getElementById('mistakes').innerText = mistakes
+        }
+        //Return true if all characters are entered correctly
+        let check = quoteChars.every((element) => {
+            return element.classList.contains("success");
+        });
+        // End test if all characters are correct
+        if (check) {
+            console.log('yay test complete!!!!!!!!')
+        }
+
+    })
+
+})
+
 
 // Start test onclick
 const startTest = () => {
-    console.log('TEST STARTED !!!!!!')
     timer = ''
     mistakes = 0
     userInput.disabled = false;
