@@ -24,28 +24,46 @@ const renderNewQuote = async () => {
     })
     // Join elements in array and display on quote section
     // a += b is a = a + b
-    quoteSection.innerHTML += arr.join('')  // don't know why they used the += and not the = ¯\_(ツ)_/¯ 
+    quoteSection.innerHTML = arr.join('')  // don't know why they used the += and not the = ¯\_(ツ)_/¯ 
 }
 
+// Fake API request for debugging
 const fakeApiReq = () => {
-    quote = 'A cat and a cow'
+    quote = 'A cat and a cow.'
     let arr = quote.split('').map((value) => {
         return "<span class='quote-chars'>" + value + "</span>"
     })
     quoteSection.innerHTML += arr.join('')
 }
 
-// New sentence on window load event
-window.onload = () => {
+// Load test
+const loadTest = () => {
     userInput.value = ''
     // Assign css with ".style" property
     document.getElementById('start-test').style.display = 'block'
     document.getElementById('stop-test').style.display = 'none'
     userInput.disabled = true
+
+    // Check if result is displayed. If true set display property to none
+    if (document.querySelector('.result').style.display = 'block') {
+        document.querySelector('.result').style.display = 'none'
+    }
+
+    // reset mistakes
+    quote = ''
+    quoteSection.innerHTML = quote
+    time = 60
+    timer = '0'
+    document.getElementById('timer').innerText = timer + "s" 
+    mistakes = 0
+    document.getElementById('mistakes').innerText = mistakes
+
     // Display new quote
     renderNewQuote()
     // fakeApiReq()
 }
+// New sentence on window load event
+window.onload = () => (loadTest())
 
 // Logic to compare input to quote
 userInput.addEventListener('input', () => {

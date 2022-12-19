@@ -83,3 +83,9 @@ button {
 .fail {
     color: #e81c4e;
 }
+
+.wrapper-next-test {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
