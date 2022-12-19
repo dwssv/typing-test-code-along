@@ -43,8 +43,8 @@ window.onload = () => {
     document.getElementById('stop-test').style.display = 'none'
     userInput.disabled = true
     // Display new quote
-    // renderNewQuote()
-    fakeApiReq()
+    renderNewQuote()
+    // fakeApiReq()
 }
 
 // Logic to compare input to quote
@@ -54,7 +54,6 @@ userInput.addEventListener('input', () => {
     quoteChars = Array.from(quoteChars)
     // Array of user input characters
     let userInputChars = userInput.value.split('')
-    console.log(userInputChars)
     // Loop through each characters in quotes
     quoteChars.forEach((char, index) => {
         // Check if char (quote character) = userInputChars[index] (input character)
@@ -101,19 +100,56 @@ userInput.addEventListener('input', () => {
         });
         // End test if all characters are correct
         if (check) {
-            console.log('yay test complete!!!!!!!!')
+            displayResult()
         }
 
     })
 
 })
 
+// Update timer on screen
+function updateTimer() {
+    if (time == 0) {
+        // End test if time = 0
+        displayResult()
+    } else {
+        // decrement the 'time' variable and update on html
+        document.getElementById('timer').innerText = --time + "s" 
+    }
+}
 
-// Start test onclick
+// Set time
+const timeReduce = () => {
+    time = 60
+    timer = setInterval(updateTimer, 1000)
+
+}
+
+// End test
+const displayResult = () => {
+    // Stop timer
+    clearInterval(timer)
+
+    // Show result div
+    document.querySelector('.result').style.display = 'block'
+    document.getElementById('stop-test').style.display = 'none'
+    userInput.disabled = true
+
+    let timeTaken = 1
+    if (time != 0) {
+        timeTaken = (60 - time) / 60
+    }
+    let wordNum = quote.split(' ').length
+    document.getElementById('wpm').innerText = Math.round(wordNum / timeTaken) + ' wpm'
+    document.getElementById('accuracy').innerText = Math.round((userInput.value.length - mistakes) / userInput.value.length) * 100 + '%'
+}
+
+// Start test 
 const startTest = () => {
     timer = ''
     mistakes = 0
-    userInput.disabled = false;
+    userInput.disabled = false
+    timeReduce()
     document.getElementById('start-test').style.display = 'none'
     document.getElementById('stop-test').style.display = 'block'
 }
