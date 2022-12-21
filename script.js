@@ -40,9 +40,9 @@ const fakeApiReq = () => {
 const loadTest = () => {
     userInput.value = ''
     // Assign css with ".style" property
-    document.getElementById('start-test').style.display = 'block'
+    // document.getElementById('start-test').style.display = 'block'
     document.getElementById('stop-test').style.display = 'none'
-    userInput.disabled = true
+    userInput.disabled = false
 
     // Check if result is displayed. If true set display property to none
     if (document.querySelector('.result').style.display = 'block') {
@@ -163,11 +163,22 @@ const displayResult = () => {
 }
 
 // Start test 
-const startTest = () => {
+// const startTest = () => {
+//     timer = ''
+//     mistakes = 0
+//     userInput.disabled = false
+//     timeReduce()
+//     userInput.focus()
+//     // document.getElementById('start-test').style.display = 'none'
+//     document.getElementById('stop-test').style.display = 'block'
+// }
+
+const startTest2 = userInput.addEventListener('focus', e => {
+    console.log(e)
     timer = ''
     mistakes = 0
-    userInput.disabled = false
+    // userInput.disabled = false
     timeReduce()
-    document.getElementById('start-test').style.display = 'none'
+    userInput.focus()
     document.getElementById('stop-test').style.display = 'block'
-}
+})

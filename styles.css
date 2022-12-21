@@ -34,6 +34,7 @@ body {
 #quote {
     text-align: justify;
     margin: 50px 0 30px 0;
+    line-height: 1.75;
 }
 
 textarea {
@@ -84,8 +85,11 @@ button {
     color: #e81c4e;
 }
 
-.wrapper-next-test {
+.next-wrapper, .stop-wrapper {
     display: flex;
     justify-content: center;
+}
+
+.next-wrapper {
     margin-top: 1.5rem;
 }
