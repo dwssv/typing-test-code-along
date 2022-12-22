@@ -44,6 +44,10 @@ const loadTest = () => {
     document.getElementById('stop-test').style.display = 'none'
     userInput.disabled = false
 
+    // Display quote and text input
+    quoteSection.style.display = 'block'
+    userInput.style.display = 'block'
+
     // Check if result is displayed. If true set display property to none
     if (document.querySelector('.result').style.display = 'block') {
         document.querySelector('.result').style.display = 'none'
@@ -54,7 +58,7 @@ const loadTest = () => {
     quoteSection.innerHTML = quote
     time = 60
     timer = '0'
-    document.getElementById('timer').innerText = timer + "s" 
+    document.getElementById('timer').innerText = timer
     mistakes = 0
     document.getElementById('mistakes').innerText = mistakes
 
@@ -132,7 +136,7 @@ function updateTimer() {
         displayResult()
     } else {
         // decrement the 'time' variable and update on html
-        document.getElementById('timer').innerText = --time + "s" 
+        document.getElementById('timer').innerText = --time
     }
 }
 
@@ -153,6 +157,10 @@ const displayResult = () => {
     document.getElementById('stop-test').style.display = 'none'
     userInput.disabled = true
 
+    // hide quote and text input
+    quoteSection.style.display = 'none'
+    userInput.style.display = 'none'
+
     let timeTaken = 1
     if (time != 0) {
         timeTaken = (60 - time) / 60
@@ -163,21 +171,9 @@ const displayResult = () => {
 }
 
 // Start test 
-// const startTest = () => {
-//     timer = ''
-//     mistakes = 0
-//     userInput.disabled = false
-//     timeReduce()
-//     userInput.focus()
-//     // document.getElementById('start-test').style.display = 'none'
-//     document.getElementById('stop-test').style.display = 'block'
-// }
-
-const startTest2 = userInput.addEventListener('focus', e => {
-    console.log(e)
+userInput.addEventListener('focus', () => {
     timer = ''
     mistakes = 0
-    // userInput.disabled = false
     timeReduce()
     userInput.focus()
     document.getElementById('stop-test').style.display = 'block'

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;600&display=swap" rel="stylesheet">
 
@@ -16,33 +16,45 @@
 </head>
 
 <body>
+    <header>
+        <h2>sentences</h2>
+    </header>
+
     <div class="container">
-        <div class="stats">
-            <p>Time:<span id="timer">0s</span></p>
-            <p>Mistakes:<span id="mistakes">0</span></p>
-        </div>
-        <!-- onmousedown="return flase": prevent pointer device from pressing on element -->
-        <!-- onselectstart="return false": prevent copying of content -->
-        <div id="quote" onmousedown="return flase" onselectstart="return false"></div>
-        <!-- <div class="textarea-wrapper" onclick="startTest()"> -->
-            <textarea id="quote-input" rows="3" placeholder="Click here to start the test"></textarea>
-        <!-- </div> -->
-        <!-- <button id="start-test" onclick="startTest()">Start Test</button> -->
-        <div class="stop-wrapper">
-            <button id="stop-test" onclick="displayResult()">Stop Test</button>
-        </div>
-        <div class="result">
-            <h3>Result</h3>
-            <div class="wrapper">
-                <p>Accuracy: <span id="accuracy"></span></p>
-                <p>Speed: <span id="wpm"></span></p>
+        <div class="bar">
+            <div class="stats">
+                <span>time:<span id="timer">0</span></span> / <span>mistakes:<span id="mistakes">0</span></span>
             </div>
-            <div class="next-wrapper">
-                <button class="next-test" onclick="loadTest()">Next test</button>
+            <div class="length">
+                <span id="short">short</span> /
+                <span id="medium">medium</span> /
+                <span id="long">long</span>
+            </div>
+        </div>
+        <div class="text-container">
+            <!-- onmousedown="return flase": prevent pointer device from pressing on element -->
+            <!-- onselectstart="return false": prevent copying of content -->
+            <div id="quote" onmousedown="return flase" onselectstart="return false"></div>
+            <textarea id="quote-input" rows="3" placeholder="Click here to start the test"></textarea>
+            <div class="stop-wrapper">
+                <button id="stop-test" onclick="displayResult()">Stop Test</button>
+            </div>
+            <div class="result">
+                <h3>Result</h3>
+                <div class="wrapper">
+                    <p>Accuracy: <span id="accuracy"></span></p>
+                    <p>Speed: <span id="wpm"></span></p>
+                </div>
+                <div class="next-wrapper">
+                    <button class="next-test" onclick="loadTest()">Next test</button>
+                </div>
             </div>
         </div>
     </div>
-    
+
+    <footer>
+        <a href="https://github.com/dwssv/typing-test-code-along">github</a>
+    </footer>
     <!-- Script -->
     <script src="script.js"></script>
 </body>
