@@ -1,5 +1,4 @@
 // Random Quotes API URL
-const quoteApiUrl = 'https://api.quotable.io/random?minLength=80&maxLength=100'
 const quoteSection = document.getElementById('quote')
 const userInput = document.getElementById('quote-input')
 
@@ -10,25 +9,42 @@ let timer = ''
 let mistakes = 0
 
 // Display random quotes
-const renderNewQuote = async () => {
-    // Fetch cotent from API
-    const response = await fetch(quoteApiUrl)
-    // Store parsed returned promise as json 
-    let data = await response.json()
-    // Access content of data
-    quote = data.content
+// const renderNewQuote = async () => {
+//     // Fetch cotent from API
+//     const response = await fetch(quoteApiUrl)
+//     // Store parsed returned promise as json 
+//     let data = await response.json()
+//     // Access content of data
+//     quote = data.content
+//     // Array of each character quote
+//     let arr = quote.split('').map((value) => {
+//         // wrap each character in span tag
+//         return "<span class='quote-chars'>" + value + "</span>"
+//     })
+//     // Join elements in array and display on quote section
+//     // a += b is a = a + b
+//     quoteSection.innerHTML = arr.join('')  // don't know why they used the += and not the = ¯\_(ツ)_/¯ 
+// }
+
+const renderNewQuote = async (len) => {
+    const dict = {
+        'short': 'minLength=40&maxLength=60',
+        'medium': 'minLength=100&maxLength=120',
+        'long': 'minLength=180&maxLength=200'
+    }
+    const res = await fetch('https://api.quotable.io/random?' + dict[len]) 
+    let data = await res.json()
+    let quote = data.content
     // Array of each character quote
     let arr = quote.split('').map((value) => {
         // wrap each character in span tag
         return "<span class='quote-chars'>" + value + "</span>"
     })
-    // Join elements in array and display on quote section
-    // a += b is a = a + b
-    quoteSection.innerHTML = arr.join('')  // don't know why they used the += and not the = ¯\_(ツ)_/¯ 
+    quoteSection.innerHTML = arr.join('')
 }
 
 // Fake API request for debugging
-const fakeApiReq = () => {
+const fakeApiReq = () => {o
     quote = 'A cat and a cow.'
     let arr = quote.split('').map((value) => {
         return "<span class='quote-chars'>" + value + "</span>"
@@ -36,8 +52,23 @@ const fakeApiReq = () => {
     quoteSection.innerHTML += arr.join('')
 }
 
+// Add bold style to selected length
+const boldSelection = (len) => {
+    let arr = ['short', 'medium', 'long']
+    // remove selected test length from array
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] == len) {
+            arr.splice(i, 1)
+        }
+    }
+    // remove styles from the other two
+    document.getElementById(arr[0]).classList.remove('selected-len')
+    document.getElementById(arr[1]).classList.remove('selected-len')
+    document.getElementById(len).classList.add('selected-len')
+}
+
 // Load test
-const loadTest = () => {
+const loadTest = (len) => {
     userInput.value = ''
     // Assign css with ".style" property
     // document.getElementById('start-test').style.display = 'block'
@@ -63,11 +94,20 @@ const loadTest = () => {
     document.getElementById('mistakes').innerText = mistakes
 
     // Display new quote
-    renderNewQuote()
+    renderNewQuote(len)
     // fakeApiReq()
 }
 // New sentence on window load event
-window.onload = () => (loadTest())
+window.onload = () => {
+    boldSelection('medium')
+    loadTest('medium')
+}
+
+// New test when short / medium / long is clicked
+document.getElementById('selection').addEventListener('click', e => {
+    boldSelection(e.target.id)
+    loadTest(e.target.id)
+})
 
 // Logic to compare input to quote
 userInput.addEventListener('input', () => {
@@ -164,8 +204,10 @@ const displayResult = () => {
     let timeTaken = 1
     if (time != 0) {
         timeTaken = (60 - time) / 60
+        console.log(timeTaken)
     }
-    let wordNum = quote.split(' ').length
+    let wordNum = userInput.value.split(' ').length
+    console.log(wordNum)
     document.getElementById('wpm').innerText = Math.round(wordNum / timeTaken) + ' wpm'
     document.getElementById('accuracy').innerText = Math.round((userInput.value.length - mistakes) / userInput.value.length) * 100 + '%'
 }
