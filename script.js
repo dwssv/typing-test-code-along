@@ -4,7 +4,7 @@ const userInput = document.getElementById('quote-input')
 
 // Initialize values
 let quote = ''
-let time = 60
+let time = 0
 let timer = ''
 let mistakes = 0
 
@@ -26,7 +26,6 @@ const renderNewQuote = async (len) => {
         return "<span class='quote-chars'>" + value + "</span>"
     })
     quoteSection.innerHTML = arr.join('')
-    console.log(len)
 }
 
 // Fake API request for debugging
@@ -73,7 +72,7 @@ const loadTest = (len) => {
     // reset mistakes
     quote = ''
     quoteSection.innerHTML = quote
-    time = 60
+    time = 0
     timer = '0'
     document.getElementById('timer').innerText = timer
     mistakes = 0
@@ -139,18 +138,14 @@ userInput.addEventListener('input', () => {
 
 // Update timer on screen
 function updateTimer() {
-    if (time == 0) {
-        // End test if time = 0
-        displayResult()
-    } else {
-        // decrement the 'time' variable and update on html
-        document.getElementById('timer').innerText = --time
-    }
+    // increment the 'time' variable and update on html
+    document.getElementById('timer').innerText = ++time
+    
 }
 
 // Set time
 const timeReduce = () => {
-    time = 60
+    time = 0
     timer = setInterval(updateTimer, 1000)
 
 }
@@ -180,10 +175,7 @@ const displayResult = () => {
     quoteSection.style.display = 'none'
     userInput.style.display = 'none'
 
-    let timeTaken = 1
-    if (time != 0) {
-        timeTaken = (60 - time) / 60
-    }
+    let timeTaken = time / 60
     let wordNum = userInput.value.split(' ').length
     document.getElementById('wpm').innerText = Math.round(wordNum / timeTaken) + ' wpm'
     let accuracy = Math.round(((keystroke - mistakes) / keystroke) * 100)
