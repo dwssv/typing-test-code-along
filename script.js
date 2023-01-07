@@ -28,9 +28,9 @@ let mistakes = 0
 
 const renderNewQuote = async (len) => {
     const dict = {
-        'short': 'minLength=40&maxLength=60',
-        'medium': 'minLength=100&maxLength=120',
-        'long': 'minLength=180&maxLength=200'
+        'short': 'minLength=25&maxLength=50',
+        'medium': 'minLength=125&maxLength=150',
+        'long': 'minLength=200&maxLength=225'
     }
     const res = await fetch('https://api.quotable.io/random?' + dict[len]) 
     let data = await res.json()
@@ -99,8 +99,8 @@ const loadTest = (len) => {
 }
 // New sentence on window load event
 window.onload = () => {
-    boldSelection('medium')
-    loadTest('medium')
+    boldSelection('short')
+    loadTest('short')
 }
 
 // New test when short / medium / long is clicked
@@ -187,6 +187,19 @@ const timeReduce = () => {
 
 }
 
+ // get total keystroke
+ const letters = '0123456789abcdefghijklmnopqrstuvwxyz!-.,? '
+ let keystroke = 0
+ document.addEventListener('keydown', e => {
+    console.log(e.key)
+    for (const l of letters.split('')) {
+        if (l === e.key) {
+            keystroke += 1
+            console.log(keystroke)
+         }
+    }
+ })
+
 // End test
 const displayResult = () => {
     // Stop timer
@@ -204,13 +217,15 @@ const displayResult = () => {
     let timeTaken = 1
     if (time != 0) {
         timeTaken = (60 - time) / 60
-        console.log(timeTaken)
     }
     let wordNum = userInput.value.split(' ').length
+    let letterNum = userInput.value.split('').length
     console.log(wordNum)
     document.getElementById('wpm').innerText = Math.round(wordNum / timeTaken) + ' wpm'
-    document.getElementById('accuracy').innerText = Math.round((userInput.value.length - mistakes) / userInput.value.length) * 100 + '%'
+    let accuracy = Math.round(((keystroke - mistakes) / keystroke) * 100)
+    document.getElementById('accuracy').innerText = accuracy + '%'
 }
+
 
 // Start test 
 userInput.addEventListener('focus', () => {
