@@ -8,28 +8,13 @@ let time = 60
 let timer = ''
 let mistakes = 0
 
-// Display random quotes
-// const renderNewQuote = async () => {
-//     // Fetch cotent from API
-//     const response = await fetch(quoteApiUrl)
-//     // Store parsed returned promise as json 
-//     let data = await response.json()
-//     // Access content of data
-//     quote = data.content
-//     // Array of each character quote
-//     let arr = quote.split('').map((value) => {
-//         // wrap each character in span tag
-//         return "<span class='quote-chars'>" + value + "</span>"
-//     })
-//     // Join elements in array and display on quote section
-//     // a += b is a = a + b
-//     quoteSection.innerHTML = arr.join('')  // don't know why they used the += and not the = ¯\_(ツ)_/¯ 
-// }
-
 const renderNewQuote = async (len) => {
+    if (!len) {
+        len = document.getElementsByClassName('selected-len')[0].innerText
+    }
     const dict = {
         'short': 'minLength=25&maxLength=50',
-        'medium': 'minLength=125&maxLength=150',
+        'medium': 'minLength=100&maxLength=125',
         'long': 'minLength=200&maxLength=225'
     }
     const res = await fetch('https://api.quotable.io/random?' + dict[len]) 
@@ -41,10 +26,11 @@ const renderNewQuote = async (len) => {
         return "<span class='quote-chars'>" + value + "</span>"
     })
     quoteSection.innerHTML = arr.join('')
+    console.log(len)
 }
 
 // Fake API request for debugging
-const fakeApiReq = () => {o
+const fakeApiReq = () => {
     quote = 'A cat and a cow.'
     let arr = quote.split('').map((value) => {
         return "<span class='quote-chars'>" + value + "</span>"
@@ -103,12 +89,6 @@ window.onload = () => {
     loadTest('short')
 }
 
-// New test when short / medium / long is clicked
-document.getElementById('selection').addEventListener('click', e => {
-    boldSelection(e.target.id)
-    loadTest(e.target.id)
-})
-
 // Logic to compare input to quote
 userInput.addEventListener('input', () => {
     let quoteChars = document.querySelectorAll('.quote-chars')
@@ -123,19 +103,7 @@ userInput.addEventListener('input', () => {
             char.classList.add('success')
         }
         // If user hasn't entered anything or backspaced
-        else if (userInputChars[index] == null) {   // undefined also works instead of null
-            // If you try to index an empty array you get undefined. I dont understand why they used null
-            // const emptyArr = [], emptyArr[1] returns undefined
-            // const const twoItems = ['a', 'b'], twoItems[2] returns undefined
-            // forEach goes through each character in the quoteChars array
-            // When a user backspaces or when the array is empty, userInputChars[index] is undefined
-            // If the conditions above are met, the if/else statement to remove class below runs
-
-            // null: intentional absence of any value, must be assigned
-            // undefined: variables that do not have an assigned value
-
-            // In conclusion, from my research, I think that in this case. undefined might be a better use.
-            // **************************************
+        else if (userInputChars[index] == undefined) {
 
             // Remove class if any 
             if (char.classList.contains('success')) {
@@ -191,11 +159,9 @@ const timeReduce = () => {
  const letters = '0123456789abcdefghijklmnopqrstuvwxyz!-.,? '
  let keystroke = 0
  document.addEventListener('keydown', e => {
-    console.log(e.key)
     for (const l of letters.split('')) {
         if (l === e.key) {
             keystroke += 1
-            console.log(keystroke)
          }
     }
  })
@@ -219,8 +185,6 @@ const displayResult = () => {
         timeTaken = (60 - time) / 60
     }
     let wordNum = userInput.value.split(' ').length
-    let letterNum = userInput.value.split('').length
-    console.log(wordNum)
     document.getElementById('wpm').innerText = Math.round(wordNum / timeTaken) + ' wpm'
     let accuracy = Math.round(((keystroke - mistakes) / keystroke) * 100)
     document.getElementById('accuracy').innerText = accuracy + '%'
@@ -234,4 +198,11 @@ userInput.addEventListener('focus', () => {
     timeReduce()
     userInput.focus()
     document.getElementById('stop-test').style.display = 'block'
+})
+
+
+// New test when short / medium / long is clicked
+document.getElementById('selection').addEventListener('click', e => {
+    boldSelection(e.target.id)
+    loadTest(e.target.id)
 })
