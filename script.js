@@ -17,7 +17,7 @@ const renderNewQuote = async (len) => {
         'medium': 'minLength=100&maxLength=125',
         'long': 'minLength=200&maxLength=225'
     }
-    const res = await fetch('https://api.quotable.io/random?' + dict[len]) 
+    const res = await fetch('https://api.quotable.io/random?' + dict[len])
     let data = await res.json()
     let quote = data.content
     // Array of each character quote
@@ -140,7 +140,7 @@ userInput.addEventListener('input', () => {
 function updateTimer() {
     // increment the 'time' variable and update on html
     document.getElementById('timer').innerText = ++time
-    
+
 }
 
 // Set time
@@ -150,16 +150,16 @@ const timeReduce = () => {
 
 }
 
- // get total keystroke
- const letters = '0123456789abcdefghijklmnopqrstuvwxyz!-.,? '
- let keystroke = 0
- document.addEventListener('keydown', e => {
+// get total keystroke
+const letters = '0123456789abcdefghijklmnopqrstuvwxyz!-.,? '
+let keystroke = 0
+document.addEventListener('keydown', e => {
     for (const l of letters.split('')) {
         if (l === e.key) {
             keystroke += 1
-         }
+        }
     }
- })
+})
 
 // End test
 const displayResult = () => {
@@ -175,11 +175,20 @@ const displayResult = () => {
     quoteSection.style.display = 'none'
     userInput.style.display = 'none'
 
-    let timeTaken = time / 60
-    let wordNum = userInput.value.split(' ').length
-    document.getElementById('wpm').innerText = Math.round(wordNum / timeTaken) + ' wpm'
-    let accuracy = Math.round(((keystroke - mistakes) / keystroke) * 100)
-    document.getElementById('accuracy').innerText = accuracy + '%'
+    // if input is empty display afk detected
+    if (userInput.value !== '') {
+        document.getElementById('afk').style.display = 'none'
+        let timeTaken = time / 60
+        let wordNum = userInput.value.split(' ').length
+        document.getElementById('wpm').innerText = Math.round(wordNum / timeTaken) + ' wpm'
+        let accuracy = Math.round(((keystroke - mistakes) / keystroke) * 100)
+        document.getElementById('accuracy').innerText = accuracy + '%'
+    } else {
+        document.getElementById('afk').style.display = 'block'   
+        document.getElementById('results').style.display = 'none'
+    }
+
+
 }
 
 
