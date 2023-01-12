@@ -178,6 +178,7 @@ const displayResult = () => {
     // if input is empty display afk detected
     if (userInput.value !== '') {
         document.getElementById('afk').style.display = 'none'
+        document.getElementById('results').style.display = 'flex'
         let timeTaken = time / 60
         let wordNum = userInput.value.split(' ').length
         document.getElementById('wpm').innerText = Math.round(wordNum / timeTaken) + ' wpm'
